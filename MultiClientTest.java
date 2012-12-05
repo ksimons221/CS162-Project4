@@ -41,17 +41,29 @@ public class MultiClientTest {
 	 */
 	//static KVServer key_server = null;
 	static SocketServer server = null;
-	protected static runClient mythreads[] = null;
+	protected static Thread mythreads[] = null;
 
 	public static void main(String[] args) {
 
-		new runServer().start();
+		int numOfClients  = 10;
+		mythreads = new Thread[numOfClients];	
 		
+		for(int i =0; i< numOfClients; i++){
+			mythreads[i] = new Thread(new runClient());
+		}
+		for(int i =0; i<numOfClients; i++){
+			mythreads[i].start();
+		}
+		
+		
+	//	new runServer().start();
+	/*	
 		System.out.println("ALL CLEAR");
 		runSpecificClient1 run1 = new runSpecificClient1();
 		runSpecificClient2 run2 = new runSpecificClient2();
 		run1.start();
 		run2.run();
+	*/
 		
 		//System.out.println(Server.key_server.getCache().toString());
 	//	try {
@@ -87,11 +99,12 @@ class runClient extends Thread {
 			String eight = "" + num;
 
 			System.out.println("putting" + " " + three + " " + seven);
-			boolean status = kc.put(three, seven);
+			kc.put(three, seven);
+			boolean status = true;
 			System.out.println("status: " + status);
 
 			System.out.println("putting" + " " + two + " " + eight);
-			status = kc.put(two, eight);
+			kc.put(two, eight);
 			System.out.println("status: " + status);
 
 			System.out.println("getting key=2");
@@ -137,8 +150,9 @@ class runSpecificClient1 extends Thread {
 		KVClient kc = new KVClient("localhost", 8080);
 		int num = (int) ((int) 100.0 * Math.random());
 		try {
-			boolean status = kc.put("amrit", "orange");
-			status = kc.put("kevin", "brown");
+			boolean status = true;
+		    kc.put("amrit", "orange");
+			kc.put("kevin", "brown");
 			System.out.println("status" + status);
 			kc.get("kevin");
 			//kc.del("kevin");
