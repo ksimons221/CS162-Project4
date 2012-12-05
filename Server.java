@@ -45,7 +45,7 @@ public class Server {
 		
 		// Create TPCMaster
 				
-		int numberOfSlaves = 2; //Integer.parseInt(args[0]);
+		int numberOfSlaves = 5; //Integer.parseInt(args[0]);
 		tpcMaster = new TPCMaster(numberOfSlaves);
 		tpcMaster.run();
 		

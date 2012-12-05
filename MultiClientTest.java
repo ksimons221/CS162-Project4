@@ -60,7 +60,7 @@ public class MultiClientTest {
 	//		e.printStackTrace();
 	//	}
 		
-		Server.server.stop();
+		//Server.server.stop();
 		
 		new runClient().start();
 				

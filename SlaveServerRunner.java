@@ -22,17 +22,20 @@ public class SlaveServerRunner {
 	
 	public void run() {
 
-		runSlaveServer1 temp1 = new runSlaveServer1(50, 1);
-		runningSlaves.add(temp1);
+		runSlaveServer1 temp1 = new runSlaveServer1(50, 4000);
 		new Thread(temp1).start();
-		
-		
-		runSlaveServer1 temp2 = new runSlaveServer1(50000, 2);
-		runningSlaves.add(temp2);
+
+		runSlaveServer1 temp2 = new runSlaveServer1(50000, 4001);
 		new Thread(temp2).start();
 
-		// runSlaveServer1 temp3 = new runSlaveServer1(1, 3);
-		// new Thread(temp3).start();
+		runSlaveServer1 temp3 = new runSlaveServer1(12345, 4002);
+		new Thread(temp3).start();
+
+		runSlaveServer1 temp4 = new runSlaveServer1(22345, 4003);
+		new Thread(temp4).start();
+
+		runSlaveServer1 temp5 = new runSlaveServer1(42345, 4004);
+		new Thread(temp5).start();
 	}
 
 	public class runSlaveServer1 implements Runnable {
