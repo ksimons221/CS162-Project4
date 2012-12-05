@@ -47,7 +47,7 @@ public class MultiClientTest {
 
 		new runServer().start();
 		
-
+		System.out.println("ALL CLEAR");
 		runSpecificClient1 run1 = new runSpecificClient1();
 		runSpecificClient2 run2 = new runSpecificClient2();
 		run1.start();
