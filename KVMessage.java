@@ -52,7 +52,7 @@ import javax.xml.transform.stream.*;
  * This is the object that is used to generate messages the XML based messages
  * for communication between clients and servers.
  */
-public class KVMessage implements Serializable { 
+public class KVMessage implements Serializable {
 	/**
 	 * 
 	 */
@@ -179,7 +179,7 @@ public class KVMessage implements Serializable {
 			KVException toThrow = new KVException(errorMessage);
 			throw toThrow;
 		}
-		//System.out.println("Input stream string:" + toReturn);
+		// System.out.println("Input stream string:" + toReturn);
 		InputStream input = null;
 		try {
 			input = new ByteArrayInputStream(toReturn.getBytes("UTF-8"));
@@ -247,10 +247,7 @@ public class KVMessage implements Serializable {
 	}
 
 	public void checkValidity() throws KVException {
-		boolean temp = true;
-		if (temp) {
-			return;
-		}
+
 		if (!validMessageType(this.msgType))
 			throw new KVException(new KVMessage("resp", "Unknown Error: Message format incorrect"));
 
@@ -304,12 +301,6 @@ public class KVMessage implements Serializable {
 				KVException toThrow = new KVException(errorMessage);
 				throw toThrow;
 			}
-		} else if (this.msgType.equals("ignoreNext")) {
-			if (this.message == null) {
-				KVMessage errorMessage = new KVMessage("resp", "Unknown Error: Message format incorrect");
-				KVException toThrow = new KVException(errorMessage);
-				throw toThrow;
-			}
 		} else if (this.msgType.equals("register")) {
 			if (this.message == null) {
 				KVMessage errorMessage = new KVMessage("resp", "Unknown Error: Message format incorrect");
@@ -322,7 +313,7 @@ public class KVMessage implements Serializable {
 	}
 
 	public static boolean validMessageType(String input) {
-		return input.equals("getreq") || input.equals("putreq") || input.equals("delreq") || input.equals("resp") || input.equals("register") || input.equals("ready") || input.equals("commit") || input.equals("abort") || input.equals("ack");
+		return input.equals("getreq") || input.equals("putreq") || input.equals("ignoreNext") || input.equals("delreq") || input.equals("resp") || input.equals("register") || input.equals("ready") || input.equals("commit") || input.equals("abort") || input.equals("ack");
 	}
 
 	/**

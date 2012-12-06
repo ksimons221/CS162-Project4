@@ -56,9 +56,6 @@ public class TPCMasterHandler implements NetworkHandler {
 	// States carried from the first to the second phase of a 2PC operation
 	private KVMessage originalMessage = null;
 	private boolean aborted = true;
-	
-	
-	
 
 	public TPCMasterHandler(KVServer keyserver) {
 		this(keyserver, 1);
@@ -75,7 +72,7 @@ public class TPCMasterHandler implements NetworkHandler {
 		this.slaveID = slaveID;
 		threadpool = new ThreadPool(connections);
 	}
-	
+
 	public KVMessage getOrigMsg() {
 		return this.originalMessage;
 	}
@@ -105,27 +102,46 @@ public class TPCMasterHandler implements NetworkHandler {
 				e1.printStackTrace();
 			}
 
-			//System.out.println("From coordinater sever: " + msg.toString());
+			// System.out.println("From coordinater sever: " + msg.toString());
 
 			// Parse the message and do stuff
 
 			String key = msg.getKey();
 
-			
 			if (msg.getMsgType().equals("putreq")) {
-				tpcLog.appendAndFlush(msg);
-				handlePut(msg, key);
+
+				if (ignoreNext == true) {
+					sendAbortMessage(msg.getTpcOpId());
+					ignoreNext = false;
+					closeConn();
+					return;
+				} else {
+					tpcLog.appendAndFlush(msg);
+					handlePut(msg, key);
+				}
 			} else if (msg.getMsgType().equals("getreq")) {
 				handleGet(msg, key);
 			} else if (msg.getMsgType().equals("delreq")) {
-				tpcLog.appendAndFlush(msg);
-				handleDel(msg, key);
+				if (ignoreNext == true) {
+					sendAbortMessage(msg.getTpcOpId());
+					ignoreNext = false;
+					closeConn();
+					return;
+				} else {
+					tpcLog.appendAndFlush(msg);
+					handleDel(msg, key);
+				}
 			} else if (msg.getMsgType().equals("ignoreNext")) {
 				// Set ignoreNext to true. PUT and DEL handlers know what to do.
 				// Implement me
 
 				// Send back an acknowledgment
 				// Implement me
+
+				ignoreNext = true;
+
+				sendIgnoreNextAck();
+
 			} else if (msg.getMsgType().equals("commit") || msg.getMsgType().equals("abort")) {
 				// Check in TPCLog for the case when SlaveServer is restarted
 				// Implement me
@@ -145,6 +161,40 @@ public class TPCMasterHandler implements NetworkHandler {
 			closeConn();
 		}
 
+		private void sendAbortMessage(String id) {
+
+			KVMessage toReturn = null;
+			try {
+				toReturn = new KVMessage("abort", "Ignore next");
+			} catch (KVException e) {
+				return;
+			}
+			toReturn.setTpcOpId(id);
+			try {
+				toReturn.sendMessage(client);
+			} catch (KVException e) {
+				return;
+			}
+
+		}
+
+		private void sendIgnoreNextAck() {
+
+			KVMessage toReturn = null;
+			try {
+				toReturn = new KVMessage("resp", "Success");
+			} catch (KVException e) {
+				return;
+			}
+
+			try {
+				toReturn.sendMessage(client);
+			} catch (KVException e) {
+				return;
+			}
+
+		}
+
 		private void sendToReturn(KVMessage toReturn) {
 			try {
 				toReturn.sendMessage(client);
@@ -155,7 +205,6 @@ public class TPCMasterHandler implements NetworkHandler {
 
 		private void handlePut(KVMessage msg, String key) {
 			AutoGrader.agTPCPutStarted(slaveID, msg, key);
-
 
 			// Store for use in the second phase
 			originalMessage = new KVMessage(msg);
@@ -281,37 +330,9 @@ public class TPCMasterHandler implements NetworkHandler {
 		private void handleMasterResponse(KVMessage masterResp, KVMessage origMsg, boolean origAborted) {
 			AutoGrader.agSecondPhaseStarted(slaveID, origMsg, origAborted);
 
-			
 			// /implement me
 			if (origAborted == false) { // / do this shit
-				if (origMsg.getMsgType().equals("putreq")) {
-					try {
-						this.keyserver.put(origMsg.getKey(), origMsg.getValue());
-					} catch (KVException e) {
-						System.out.println("Some how the put failed. BAD");
-						return;
-					}
-
-					tpcLog.appendAndFlush(masterResp);
-
-					
-					try {
-						KVMessage toReturn = new KVMessage("ack");
-						toReturn.setTpcOpId(masterResp.getTpcOpId());
-						sendToReturn(toReturn);
-					} catch (KVException e) {
-						e.printStackTrace();
-					}
-				} else if (origMsg.getMsgType().equals("delreq")) {
-					try {
-						this.keyserver.del(origMsg.getKey());
-					} catch (KVException e) {
-						System.out.println("Some how the del failed. BAD");
-						return;
-					}
-
-					tpcLog.appendAndFlush(masterResp);
-
+				if (origMsg == null) {
 					KVMessage toReturn;
 					try {
 						toReturn = new KVMessage("ack");
@@ -320,12 +341,53 @@ public class TPCMasterHandler implements NetworkHandler {
 					} catch (KVException e) {
 						e.printStackTrace();
 					}
+				} else {
+					if (origMsg.getMsgType().equals("putreq")) {
+						try {
+							this.keyserver.put(origMsg.getKey(), origMsg.getValue());
+						} catch (KVException e) {
+							System.out.println("Some how the put failed. BAD");
+							return;
+						}
 
+						originalMessage = null;
+
+						tpcLog.appendAndFlush(masterResp);
+
+						try {
+							KVMessage toReturn = new KVMessage("ack");
+							toReturn.setTpcOpId(masterResp.getTpcOpId());
+							sendToReturn(toReturn);
+						} catch (KVException e) {
+							e.printStackTrace();
+						}
+					} else if (origMsg.getMsgType().equals("delreq")) {
+						try {
+							this.keyserver.del(origMsg.getKey());
+						} catch (KVException e) {
+							System.out.println("Some how the del failed. BAD");
+							return;
+						}
+
+						originalMessage = null;
+						tpcLog.appendAndFlush(masterResp);
+
+						KVMessage toReturn;
+						try {
+							toReturn = new KVMessage("ack");
+							toReturn.setTpcOpId(masterResp.getTpcOpId());
+							sendToReturn(toReturn);
+						} catch (KVException e) {
+							e.printStackTrace();
+						}
+					}
 				}
 			} else { // need to abort
-				origMsg = null;
+				if (origMsg != null) { // / pairs to nothing
+					tpcLog.appendAndFlush(masterResp);
+				}
+				originalMessage = null;
 				KVMessage toReturn;
-				tpcLog.appendAndFlush(masterResp);
 				try {
 					toReturn = new KVMessage("ack");
 					toReturn.setTpcOpId(masterResp.getTpcOpId());

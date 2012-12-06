@@ -45,11 +45,15 @@ public class Client {
 			System.out.println("getting key=3"); 
 			String value = kc.get(three);
 			System.out.println("returned: " + value);
-			/*
-			 * System.out.println("putting (3, 7)"); kc.put(three, seven);
-			 * System.out.println("getting key=3"); String value =
-			 * kc.get(three); System.out.println("returned: " + value);
-			 */
+			//assert(value.equals("eight"));
+			//kc.del(three);
+			
+			//System.out.println("putting (7, 9)");
+			//kc.put("seven", "nine");
+			
+			//System.out.println("putting (1, 70)");
+			//kc.put("one", "seventy");
+			
 		} catch (KVException e) {
 			System.out.println("KV EXCPETION CAME OUT");
 			System.out.println(e.getMsg().toString());

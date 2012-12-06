@@ -84,6 +84,7 @@ public class TPCLog {
 		//entries = new ArrayList<KVMessage>();
 		entries.add(entry);
 		flushToDisk();
+		entries.clear();
 	}
 
 	/**
@@ -170,14 +171,12 @@ public class TPCLog {
 					continue;
 				}
 				if (i+1 >= entries.size()) {
-					System.out.println("SET INTERRUPED TPC OPRERATION");
 					interruptedTpcOperation = entries.get(i);
 					break;
 				}
 				String resp = entries.get(i+1).getMsgType();
 				if (resp.equals("commit")) {
 					if (msgType.equals("putreq")) {
-						//System.out.println("key is: " + entries.get(i).getKey());
 						kvServer.put(entries.get(i).getKey(),entries.get(i).getValue());
 					} else {
 						kvServer.del(entries.get(i).getKey());
@@ -193,6 +192,8 @@ public class TPCLog {
 				}
 			}
 		}
+		
+		entries = null;
 	}
 	
 	/**

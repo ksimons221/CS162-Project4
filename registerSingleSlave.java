@@ -75,13 +75,9 @@ public class registerSingleSlave {
 				e1.printStackTrace();
 			}
 			
-			System.out.println("Original message after rebuild: " + handler.getOrigMsg());
-
 			// Set log for TPCMasterHandler
 			handler.setTPCLog(tpcLog);
 			
-			System.out.println("Original message after set: " + handler.getOrigMsg());
-
 			// Register with the Master. Assuming it always succeeds (not
 			// catching).
 			try {
