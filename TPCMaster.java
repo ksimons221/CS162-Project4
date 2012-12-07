@@ -123,7 +123,7 @@ public class TPCMaster {
 					return;
 				}
 			} else {
-				System.out.println("The registration server is not getting a regiester request o_O");
+				//System.out.println("The registration server is not getting a regiester request o_O");
 				return;
 			}
 			String errorMessage = slaveValidation(newSlave);
@@ -147,10 +147,10 @@ public class TPCMaster {
 				if (reRegisterd == false) {
 					addSlave(newSlave);
 				}
-				System.out.println("Amount of registered slaves:" + theSlaveInfo.size());
+				//System.out.println("Amount of registered slaves:" + theSlaveInfo.size());
 				return;
 			} catch (KVException e) {
-				System.out.println("Amount of registered slaves:" + theSlaveInfo.size());
+				//System.out.println("Amount of registered slaves:" + theSlaveInfo.size());
 				sendToReturn(e.getMsg());
 				return;
 			}
@@ -335,7 +335,7 @@ public class TPCMaster {
 				return;
 			}
 		}
-		System.out.println("The new biggest slave id is:  " + newSlave.getSlaveID());
+		//System.out.println("The new biggest slave id is:  " + newSlave.getSlaveID());
 		theSlaveInfo.add(newSlave);
 
 	}
@@ -351,7 +351,7 @@ public class TPCMaster {
 				try {
 					regServer.run();
 				} catch (IOException e) {
-					e.printStackTrace();
+					//e.printStackTrace();
 				}
 			}
 		};
@@ -465,7 +465,7 @@ public class TPCMaster {
 				}
 			}
 		}
-		System.out.println("HORRIBLE IN FIND SUCCESSOR");
+		//System.out.println("HORRIBLE IN FIND SUCCESSOR");
 		return null;
 	}
 
@@ -501,7 +501,7 @@ public class TPCMaster {
 		 try {
 			masterThread.await();
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		 masterLockTCP.unlock();
 	
@@ -519,7 +519,7 @@ public class TPCMaster {
 			 try {
 				masterThread.await();
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
 			 masterLockTCP.unlock();
 			
@@ -533,7 +533,7 @@ public class TPCMaster {
 			AutoGrader.agPerformTPCOperationFinished(isPutReq);
 			return true;
 		} else { // slave server wants to abort
-			System.out.println("Slave server wants to abort");
+			//System.out.println("Slave server wants to abort");
 			
 			
 			
@@ -547,7 +547,7 @@ public class TPCMaster {
 			 try {
 				masterThread.await();
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
 			 masterLockTCP.unlock();
 			
@@ -723,7 +723,7 @@ private class abortPhase implements Runnable {
 			
 			SlaveInfo primary = findFirstReplica(msg.getKey());
 
-			System.out.println("Asking first slave");
+			//System.out.println("Asking first slave");
 
 			String server1Response = null;
 
@@ -732,11 +732,11 @@ private class abortPhase implements Runnable {
 			} catch (KVException k) {
 				server1Response = null;
 			}
-			System.out.println("server1Response:  " + server1Response);
+			//System.out.println("server1Response:  " + server1Response);
 
 			if (server1Response == null) { // have to check second
 
-				System.out.println("Asking second slave");
+				//System.out.println("Asking second slave");
 
 				SlaveInfo secondary = findSuccessor(primary);
 
@@ -748,7 +748,7 @@ private class abortPhase implements Runnable {
 
 					masterCache.getWriteLock(msg.getKey()).unlock();
 
-					System.out.println("BOTH SERVERS ARE NULL");
+					//System.out.println("BOTH SERVERS ARE NULL");
 
 					throw new KVException(new KVMessage("resp", "Error Message: The key could not be found"));
 
@@ -805,7 +805,7 @@ private class abortPhase implements Runnable {
 		int i = 0;
 		for (Iterator<TPCMaster.SlaveInfo> iterator = theSlaveInfo.iterator(); iterator.hasNext();) {
 			SlaveInfo currentSlave = iterator.next();
-			System.out.println("slave id " + i + ": " + currentSlave.getSlaveID());
+			//System.out.println("slave id " + i + ": " + currentSlave.getSlaveID());
 			i++;
 		}
 	}
