@@ -100,7 +100,7 @@ public class TPCLog {
 			inputStream = new ObjectInputStream(new FileInputStream(logPath));			
 			entries = (ArrayList<KVMessage>) inputStream.readObject();
 		} catch (Exception e) {
-			System.out.println("File does not exist");
+		//	System.out.println("File does not exist");
 		} finally {
 			// If log never existed, there are no entries
 			if (entries == null) {
@@ -112,7 +112,7 @@ public class TPCLog {
 					inputStream.close();
 				}
 			} catch (IOException e) {				
-				e.printStackTrace();
+			//	e.printStackTrace();
 			}
 		}
 	}
@@ -127,7 +127,7 @@ public class TPCLog {
 			outputStream = new ObjectOutputStream(new FileOutputStream(logPath));
 			outputStream.writeObject(entries);
 		} catch (Exception e) {
-			e.printStackTrace();
+		//	e.printStackTrace();
 		} finally {
 			try {
 				if (outputStream != null) {
@@ -135,7 +135,7 @@ public class TPCLog {
 					outputStream.close();
 				}
 			} catch (IOException e) {				
-				e.printStackTrace();
+			//	e.printStackTrace();
 			}
 		}
 	}
@@ -151,7 +151,7 @@ public class TPCLog {
 		loadFromDisk();
 
 		if (entries == null) {
-			System.out.println("entry null");
+		//	System.out.println("entry null");
 			return;
 		}
 		
@@ -185,7 +185,7 @@ public class TPCLog {
 					continue;
 				}
 				else {
-					System.out.println("BAD THINGS");
+			//		System.out.println("BAD THINGS");
 				}
 			}
 		}

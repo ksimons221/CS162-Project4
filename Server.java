@@ -51,12 +51,12 @@ public class Server {
 		
 		// Create KVClientHandler  
 
-		System.out.println("Binding Master:");
+	//	System.out.println("Binding Master:");
 		server = new SocketServer(InetAddress.getLocalHost().getHostAddress(), 8080);
 		NetworkHandler handler = new KVClientHandler(null, tpcMaster);
 		server.addHandler(handler);
 		server.connect();
-		System.out.println("Starting Master");
+		//System.out.println("Starting Master");
 		SlaveServerRunner temp = new SlaveServerRunner(numberOfSlaves);
 		temp.run();
 		server.run();		

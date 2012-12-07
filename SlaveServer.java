@@ -52,8 +52,8 @@ public class SlaveServer {
 	public static void main(String[] args) throws Exception {
 		if (!debugging) {
 			if (args.length != 4) {
-				System.err
-						.println("USAGE: SlaveServer <slaveID> <masterHostName>");
+			//	System.err
+			//			.println("USAGE: SlaveServer <slaveID> <masterHostName>");
 				System.exit(1);
 			}
 		}
@@ -62,10 +62,10 @@ public class SlaveServer {
 		masterHostName = args[1];
 
 		// Create TPCMasterHandler
-		System.out.println("Binding SlaveServer:");
+		//System.out.println("Binding SlaveServer:");
 		keyServer = new KVServer(100, 10);
 		int port = Integer.parseInt(args[2]);; // /////// THIS IS CHANGED
-		System.out.println("port to connect:" + port);
+		//System.out.println("port to connect:" + port);
 		server = new SocketServer(InetAddress.getLocalHost().getHostAddress(), port); // /// USED TO HAVE NO PORT
 		TPCMasterHandler handler = new TPCMasterHandler(keyServer, slaveID);
 		server.addHandler(handler);
@@ -84,8 +84,8 @@ public class SlaveServer {
 		// Register with the Master. Assuming it always succeeds (not catching).
 		handler.registerWithMaster(masterHostName, server);
 
-		System.out.println("Starting SlaveServer at " + server.getHostname()
-				+ ":" + server.getPort());
+	//	System.out.println("Starting SlaveServer at " + server.getHostname()
+	//			+ ":" + server.getPort());
 		server.run();
 	}
 

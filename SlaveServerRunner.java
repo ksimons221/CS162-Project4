@@ -77,19 +77,19 @@ public class SlaveServerRunner {
 		public void run() {
 
 			// Create TPCMasterHandler
-			System.out.println("Binding SlaveServer:");
+		//	System.out.println("Binding SlaveServer:");
 			keyServer = new KVServer(100, 10);
 			try {
 				server = new SocketServer(InetAddress.getLocalHost().getHostAddress(), port);
 			} catch (UnknownHostException e) {
-				e.printStackTrace();
+		//		e.printStackTrace();
 			} // /// USED TO HAVE NO PORT
 			TPCMasterHandler handler = new TPCMasterHandler(keyServer, slaveID);
 			server.addHandler(handler);
 			try {
 				server.connect();
 			} catch (IOException e) {
-				e.printStackTrace();
+		//		e.printStackTrace();
 			}
 
 			// Create TPCLog
@@ -102,7 +102,7 @@ public class SlaveServerRunner {
 				try {
 					tpcLog.rebuildKeyServer();
 				} catch (KVException e) {
-					e.printStackTrace();
+		//			e.printStackTrace();
 				}
 			}
 
@@ -114,18 +114,18 @@ public class SlaveServerRunner {
 			try {
 				handler.registerWithMaster(masterHostName, server);
 			} catch (UnknownHostException e) {
-				e.printStackTrace();
+		//		e.printStackTrace();
 			} catch (IOException e) {
-				e.printStackTrace();
+		//		e.printStackTrace();
 			} catch (KVException e) {
-				e.printStackTrace();
+		//		e.printStackTrace();
 			}
 
-			System.out.println("Starting SlaveServer at " + server.getHostname() + ":" + server.getPort());
+		//	System.out.println("Starting SlaveServer at " + server.getHostname() + ":" + server.getPort());
 			try {
 				server.run();
 			} catch (IOException e) {
-				e.printStackTrace();
+		//		e.printStackTrace();
 			}
 		}
 	}

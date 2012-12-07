@@ -49,7 +49,7 @@ public class SocketServer {
 	public SocketServer(String hostname) {
 		this.hostname = hostname;
 		this.port = -1;
-		System.out.println("WHY IS THIS CALLED");
+	//	System.out.println("WHY IS THIS CALLED");
 	}
 
 	public SocketServer(String hostname, int port) {
@@ -87,7 +87,7 @@ public class SocketServer {
 	 *             inadvertently closed)
 	 */
 	public void run() throws IOException {
-		System.out.println("Started server");
+	//	System.out.println("Started server");
 		while (loopGoing) {
 			try {
 				if (!loopGoing) {
