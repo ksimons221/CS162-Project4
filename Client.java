@@ -32,9 +32,12 @@ package edu.berkeley.cs162;
 import java.io.IOException;
 
 public class Client {
+
+	//// MUST RUN SERVER FIRST   ///// 
+	
 	public static void main(String[] args) throws IOException {
 		KVClient kc = new KVClient("localhost", 8080);
-//		System.out.println("Start");
+
 		try {
 			String three = "three";
 			String seven = "seven";
@@ -45,29 +48,25 @@ public class Client {
 			System.out.println("getting key=3"); 
 			String value = kc.get(three);
 			System.out.println("returned: " + value);
-			//assert(value.equals("eight"));
-			//kc.del(three);
+		
+			System.out.println("deleting key=3"); 
+			kc.del(three);
 			
-			//System.out.println("putting (7, 9)");
-			//kc.put("seven", "nine");
+			System.out.println("putting (7, 9)");
+			kc.put("seven", "nine");
 			
-			//System.out.println("putting (1, 70)");
-			//kc.put("one", "seventy");
+			
+			System.out.println("getting key=3"); 
+			String value2 = kc.get(three);
+			System.out.println("returned: " + value2);
+			
+
 			
 		} catch (KVException e) {
-//			System.out.println("KV EXCPETION CAME OUT");
-//			System.out.println(e.getMsg().toString());
+			System.out.println("KV EXCPETION CAME OUT");
+			System.out.println(e.getMsg().toString());
 		} catch (Exception e) {
-//			System.out.println("ERROR IN MAIN CLIENT");
-//			e.printStackTrace();
 		}
-		/*
-		 * 
-		 * System.out.println("putting (3, 7) (again)"); kc.put(three, seven);
-		 * 
-		 * System.out.println("getting key=3"); String value = kc.get(three);
-		 * System.out.println("returned: " + value); kc.del(three);
-		 * }catch(Exception e){ e.printStackTrace(); }
-		 */
+
 	}
 }

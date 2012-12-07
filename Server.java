@@ -56,7 +56,6 @@ public class Server {
 		NetworkHandler handler = new KVClientHandler(null, tpcMaster);
 		server.addHandler(handler);
 		server.connect();
-		//System.out.println("Starting Master");
 		SlaveServerRunner temp = new SlaveServerRunner(numberOfSlaves);
 		temp.run();
 		server.run();		

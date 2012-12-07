@@ -30,16 +30,13 @@
  */
 package edu.berkeley.cs162;
 
-import java.io.IOException;
 
 import edu.berkeley.cs162.KVClient;
 
 public class MultiClientTest {
-	/**
-	 * @param args
-	 * @throws IOException
-	 */
-	//static KVServer key_server = null;
+
+	////// MUST START KV SERVER FIRST
+	
 	static SocketServer server = null;
 	protected static Thread mythreads[] = null;
 
@@ -56,25 +53,6 @@ public class MultiClientTest {
 		}
 		
 		
-	//	new runServer().start();
-	/*	
-		System.out.println("ALL CLEAR");
-		runSpecificClient1 run1 = new runSpecificClient1();
-		runSpecificClient2 run2 = new runSpecificClient2();
-		run1.start();
-		run2.run();
-	*/
-		
-		//System.out.println(Server.key_server.getCache().toString());
-	//	try {
-	//		System.out.println(Server.key_server.getStore().toXML());
-	//	} catch (KVException e) {
-	//		e.printStackTrace();
-	//	}
-		
-		//Server.server.stop();
-		
-		//new runClient().start();
 				
 	}
 
@@ -116,14 +94,6 @@ class runClient extends Thread {
 			e.printStackTrace();
 		}
 
-		// /Test to close Socket Server
-		/*
-		 * try{ Thread.sleep(4000);
-		 * 
-		 * }catch(Exception e){ e.printStackTrace();
-		 * 
-		 * } Server.server.stop();
-		 */
 	}
 }
 
@@ -133,7 +103,6 @@ class runServer extends Thread {
 		try {
 			Server.main(null);
 		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 
@@ -144,7 +113,6 @@ class runSpecificClient1 extends Thread {
 		try {
 			Thread.sleep(3700);
 		} catch (InterruptedException e1) {
-			e1.printStackTrace();
 		}
 		
 		KVClient kc = new KVClient("localhost", 8080);
@@ -155,12 +123,10 @@ class runSpecificClient1 extends Thread {
 			kc.put("kevin", "brown");
 			System.out.println("status" + status);
 			kc.get("kevin");
-			//kc.del("kevin");
 		    
 
 			
 		} catch (Exception e) {
-		   e.printStackTrace();
 		}
 	}
 
@@ -173,13 +139,11 @@ class runSpecificClient2 extends Thread {
 		try {
 			Thread.sleep(4000);
 		} catch (InterruptedException e1) {
-			e1.printStackTrace();
 		}
 		try {
 			kc.put("kevin", "white");
 			kc.del("amrit");
 		} catch (Exception e) {
-			 e.printStackTrace();
 		}
 	}
 

@@ -81,17 +81,18 @@ public class KVClientHandler implements NetworkHandler {
 				myMessage = new KVMessage(myStream);
 				client.shutdownInput();
 			} catch (KVException e1) {
-				//e1.printStackTrace();
+				// e1.printStackTrace();
 			} catch (IOException e1) {
-				//e1.printStackTrace();
+				// e1.printStackTrace();
 			}
 
-			//System.out.println("From actual client: " + myMessage.toString());
+			// System.out.println("From actual client: " +
+			// myMessage.toString());
 
 			while (tpcMaster.allSlavesRegisteredAndAlive() == false) {
-				
+
 			}
-			
+
 			try {
 				toReturn = new KVMessage("resp");
 			} catch (KVException e1) {
@@ -101,13 +102,25 @@ public class KVClientHandler implements NetworkHandler {
 
 			}
 
+			if (myMessage == null) {
+				try {
+					KVMessage test = new KVMessage("resp", "failure");
+				} catch (KVException e) {
+					sendToReturn(e.getMsg());
+					return;
+				}
+				sendToReturn(toReturn);
+				return;
+			}
+
 			if (myMessage.getMsgType().equals("putreq")) {
 				boolean putResponse = false;
 				try {
 					putResponse = tpcMaster.performTPCOperation(myMessage, true);
-					//System.out.println("Response for the put: " + putResponse);
+					// System.out.println("Response for the put: " +
+					// putResponse);
 				} catch (KVException e) {
-					//System.out.println(e.getMsg().toString());
+					// System.out.println(e.getMsg().toString());
 					toReturn.setMessage(e.getMsg().getMessage());
 					sendToReturn(toReturn);
 					return;
@@ -120,9 +133,10 @@ public class KVClientHandler implements NetworkHandler {
 				boolean delResponse = false;
 				try {
 					delResponse = tpcMaster.performTPCOperation(myMessage, false);
-					//System.out.println("Response for the del: " + delResponse);
+					// System.out.println("Response for the del: " +
+					// delResponse);
 				} catch (KVException e) { // / write back error
-					//System.out.println(e.getMsg().toString());
+					// System.out.println(e.getMsg().toString());
 					toReturn.setMessage(e.getMsg().getMessage());
 					sendToReturn(toReturn);
 					return;
@@ -134,7 +148,7 @@ public class KVClientHandler implements NetworkHandler {
 				try {
 					String result = tpcMaster.handleGet(myMessage);
 					if (result == null) {
-						//System.out.println("SHOULD NEVER EQUAL NULL. SHOULD BE KVEXCPETION INSTEAD");
+						// System.out.println("SHOULD NEVER EQUAL NULL. SHOULD BE KVEXCPETION INSTEAD");
 					}
 					toReturn.setKey(myMessage.getKey());
 					toReturn.setValue(result);
@@ -145,7 +159,7 @@ public class KVClientHandler implements NetworkHandler {
 					return;
 				}
 			} else {
-				//System.out.println("Bad mgs type in kv client handler");
+				// System.out.println("Bad mgs type in kv client handler");
 			}
 
 		}
