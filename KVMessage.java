@@ -297,7 +297,7 @@ public class KVMessage implements Serializable {
 		}
 
 		else if (this.msgType.equals("abort")) {
-			if (this.message == null || this.tpcOpId == null) {
+			if (this.tpcOpId == null) {
 				KVMessage errorMessage = new KVMessage("resp", "Unknown Error: Message format incorrect");
 				KVException toThrow = new KVException(errorMessage);
 				throw toThrow;
@@ -479,7 +479,7 @@ public class KVMessage implements Serializable {
 		try {
 			oos = socket.getOutputStream();
 		} catch (IOException e) {
-			System.out.println("IO EXCEPTION IN SEND MESSAGE IN KVMESSAGE");
+			//System.out.println("IO EXCEPTION IN SEND MESSAGE IN KVMESSAGE");
 			KVMessage errorMessage = new KVMessage("resp", "Network Error: Could not send data");
 			KVException toThrow = new KVException(errorMessage);
 			throw toThrow;
