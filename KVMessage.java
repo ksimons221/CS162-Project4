@@ -174,9 +174,6 @@ public class KVMessage implements Serializable {
 
 	public KVMessage(InputStream input1) throws KVException {
 		String toReturn = convertStreamToString(input1);
-		System.out.println("toReturn:  " + toReturn);
-		System.out.println("toReturn:  " + toReturn);
-		System.out.println("toReturn:  " + toReturn);
 
 		if (toReturn == null || toReturn.equals("")) {
 			KVMessage errorMessage = new KVMessage("resp", "XML Error: Received unparseable message. The slave server could have timed out.");
@@ -282,7 +279,7 @@ public class KVMessage implements Serializable {
 		}
 
 		else if (this.msgType.equals("resp")) {
-			if (message == null) {
+			if ((message == null) && (this.getKey() == null || this.getValue() == null)) {
 				KVMessage errorMessage = new KVMessage("resp", "Unknown Error: Message format incorrect");
 				KVException toThrow = new KVException(errorMessage);
 				throw toThrow;
@@ -311,12 +308,27 @@ public class KVMessage implements Serializable {
 				KVException toThrow = new KVException(errorMessage);
 				throw toThrow;
 			}
-		} else {
-			System.out.println("Check validity error");
-			System.out.println(this.toString());
+		} else if (this.msgType.equals("commit")) {
+			if (this.tpcOpId == null) {
+				KVMessage errorMessage = new KVMessage("resp", "Unknown Error: Message format incorrect");
+				KVException toThrow = new KVException(errorMessage);
+				throw toThrow;
+			}
 
+		} else if (this.msgType.equals("ack")) {
+			if (this.tpcOpId == null) {
+				KVMessage errorMessage = new KVMessage("resp", "Unknown Error: Message format incorrect");
+				KVException toThrow = new KVException(errorMessage);
+				throw toThrow;
+			}
+		} else if (this.msgType.equals("ignoreNext")) {
+
+		} else {
+			KVMessage errorMessage = new KVMessage("resp", "Unknown Error: Message format incorrect");
+			KVException toThrow = new KVException(errorMessage);
+			throw toThrow;
 		}
-		
+
 	}
 
 	public static boolean validMessageType(String input) {

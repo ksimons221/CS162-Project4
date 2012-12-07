@@ -1,3 +1,5 @@
+package edu.berkeley.cs162;
+
 /**
  * Sample instantiation of the master server  
  * 

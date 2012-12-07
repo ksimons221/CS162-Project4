@@ -719,6 +719,8 @@ private class abortPhase implements Runnable {
 		
 		if (cacheResult == null) { // not in cache
 
+			calledSlaves=true;
+			
 			SlaveInfo primary = findFirstReplica(msg.getKey());
 
 			System.out.println("Asking first slave");
@@ -813,4 +815,31 @@ private class abortPhase implements Runnable {
 	}
 
 
+	
+	//for testing
+	public String getFromSlave (int slaveId, String key) throws KVException{
+		SlaveInfo currentSlave=null;
+		for (Iterator<TPCMaster.SlaveInfo> iterator = theSlaveInfo.iterator(); iterator.hasNext();) {
+			currentSlave = iterator.next();
+			if (currentSlave.getSlaveID()==slaveId){
+				break;
+			}
+		}
+			return currentSlave.getKvClient().get(key);
+		
+	}
+	
+	public String getFromCache(String key) throws KVException{
+		return masterCache.get(key);
+	}
+	
+	public int getNumSlaves(){
+		return theSlaveInfo.size();
+	}
+	
+	
+
+	
+	public boolean calledSlaves = false;
+	
 }

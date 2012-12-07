@@ -92,7 +92,7 @@ public class KVServer implements KeyValueInterface {
 
 	}
 
-	public void verifyKey(String key) throws KVException {
+	public void verifyInput(String key, String value) throws KVException {
 		if (keyValidation(key) == false) {
 			throw badlyFormattedKey();
 		}

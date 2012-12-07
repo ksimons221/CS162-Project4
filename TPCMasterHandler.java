@@ -127,7 +127,7 @@ public class TPCMasterHandler implements NetworkHandler {
 			} else if (msg.getMsgType().equals("delreq")) {
 				tpcLog.appendAndFlush(msg);
 				if (ignoreNext == true) {
-					boolean sent =  sendAbortMessage(msg.getTpcOpId()i,"ignore next");
+					boolean sent =  sendAbortMessage(msg.getTpcOpId(),"ignore next");
 					ignoreNext = false;
 					closeConn();
 					return;
@@ -213,10 +213,10 @@ public class TPCMasterHandler implements NetworkHandler {
 			AutoGrader.agTPCPutStarted(slaveID, msg, key);
 
 			try {
-				this.keyserver.verifyKey(key);
+				this.keyserver.verifyInput(key, msg.getValue());
 			} catch (KVException e) {
 				sendAbortMessage(msg.getTpcOpId(),e.getMsg().getMessage());
-				Autograder.agTPCPutFinished(slaveID, msg, key);
+				AutoGrader.agTPCPutFinished(slaveID, msg, key);
 				return;
 			}
 

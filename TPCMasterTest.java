@@ -1,3 +1,5 @@
+package edu.berkeley.cs162;
+
 import junit.framework.TestCase;
 import java.io.IOException;
 import java.net.InetAddress;
@@ -35,7 +37,7 @@ String[] putValues= {"5-value", "801-value", "1025-value", "2012-value"};
 		
 	      String[] arguments = new String[] {numberOfSlaves};
 	      ClaireServer.main(arguments);
-	      this.coordinator = Server.tpcMaster;	
+	      this.coordinator = ClaireServer.tpcMaster;	
 
 	      new TrialRegistration(this.slaveIds, this.slavePorts);
 	      while(coordinator.stillRunningRegistration()){
