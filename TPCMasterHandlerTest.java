@@ -57,14 +57,12 @@ public class TPCMasterHandlerTest extends TestCase {
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				System.out.println("what up");
 
 				KVClient kc = new KVClient("localhost", 4000);
 
 				System.out.println("Start");
 				String three = "three";
 				String seven = "seven";
-				System.out.println("putting (3, 7)");
 				KVMessage returned = kc.put("three", "seven", "1", 5000);
 				//kc.put(three, seven);
 				

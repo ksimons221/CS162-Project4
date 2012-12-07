@@ -301,12 +301,6 @@ public class KVClient implements KeyValueInterface {
 				return e.getMsg();
 			}
 			temp.setTpcOpId(TCPopID);
-			try {
-				closeHost(socket);
-			} catch (KVException e) {
-				e.getMsg().setMsgType("abort");
-				return e.getMsg();
-			}
 			return temp;
 		}
 
@@ -405,12 +399,6 @@ public class KVClient implements KeyValueInterface {
 				return e.getMsg();
 			}
 			temp.setTpcOpId(TCPopID);
-			try {
-				closeHost(socket);
-			} catch (KVException e) {
-				e.getMsg().setMsgType("abort");
-				return e.getMsg();
-			}
 			return temp;
 		}
 
@@ -492,12 +480,6 @@ public class KVClient implements KeyValueInterface {
 				return e.getMsg();
 			}
 			temp.setTpcOpId(TCPopID);
-			try {
-				closeHost(socket);
-			} catch (KVException e) {
-				e.getMsg().setMsgType("abort");
-				return e.getMsg();
-			}
 			return temp;
 		}
 
