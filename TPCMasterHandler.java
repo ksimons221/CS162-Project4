@@ -91,9 +91,13 @@ public class TPCMasterHandler implements NetworkHandler {
 		@Override
 		public void run() {
 
+			
+			System.out.println("debugging 0 ");
+
 			KVMessage msg = null;
 			try {
 				InputStream myStream = client.getInputStream();
+				System.out.println("debugging  ");
 				msg = new KVMessage(myStream);
 				client.shutdownInput();
 			} catch (KVException e1) {

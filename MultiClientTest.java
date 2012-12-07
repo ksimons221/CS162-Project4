@@ -74,7 +74,7 @@ public class MultiClientTest {
 		
 		//Server.server.stop();
 		
-		new runClient().start();
+		//new runClient().start();
 				
 	}
 

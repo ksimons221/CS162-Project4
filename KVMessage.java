@@ -174,6 +174,10 @@ public class KVMessage implements Serializable {
 
 	public KVMessage(InputStream input1) throws KVException {
 		String toReturn = convertStreamToString(input1);
+		System.out.println("toReturn:  " + toReturn);
+		System.out.println("toReturn:  " + toReturn);
+		System.out.println("toReturn:  " + toReturn);
+
 		if (toReturn == null || toReturn.equals("")) {
 			KVMessage errorMessage = new KVMessage("resp", "XML Error: Received unparseable message. The slave server could have timed out.");
 			KVException toThrow = new KVException(errorMessage);

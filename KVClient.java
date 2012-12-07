@@ -64,6 +64,7 @@ public class KVClient implements KeyValueInterface {
 		Socket mySocket = null;
 		try {
 			mySocket = new Socket();
+			System.out.println("Server: " + server + "  port" + port);
 			mySocket.connect(new InetSocketAddress(server, port));
 		} catch (UnknownHostException e) {
 			KVMessage errorMessage = new KVMessage("resp", "Network Error: Could not connect");

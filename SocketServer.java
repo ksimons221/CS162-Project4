@@ -87,6 +87,7 @@ public class SocketServer {
 	 *             inadvertently closed)
 	 */
 	public void run() throws IOException {
+		System.out.println("Started server");
 		while (loopGoing) {
 			try {
 				if (!loopGoing) {
