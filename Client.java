@@ -34,7 +34,7 @@ import java.io.IOException;
 public class Client {
 	public static void main(String[] args) throws IOException {
 		KVClient kc = new KVClient("localhost", 8080);
-		System.out.println("Start");
+//		System.out.println("Start");
 		try {
 			String three = "three";
 			String seven = "seven";
@@ -55,11 +55,11 @@ public class Client {
 			//kc.put("one", "seventy");
 			
 		} catch (KVException e) {
-			System.out.println("KV EXCPETION CAME OUT");
-			System.out.println(e.getMsg().toString());
+//			System.out.println("KV EXCPETION CAME OUT");
+//			System.out.println(e.getMsg().toString());
 		} catch (Exception e) {
-			System.out.println("ERROR IN MAIN CLIENT");
-			e.printStackTrace();
+//			System.out.println("ERROR IN MAIN CLIENT");
+//			e.printStackTrace();
 		}
 		/*
 		 * 
