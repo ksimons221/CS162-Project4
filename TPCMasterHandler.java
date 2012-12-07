@@ -92,18 +92,18 @@ public class TPCMasterHandler implements NetworkHandler {
 		public void run() {
 
 			
-			System.out.println("debugging 0 ");
+			//System.out.println("debugging 0 ");
 
 			KVMessage msg = null;
 			try {
 				InputStream myStream = client.getInputStream();
-				System.out.println("debugging  ");
+				//System.out.println("debugging  ");
 				msg = new KVMessage(myStream);
 				client.shutdownInput();
 			} catch (KVException e1) {
-				e1.printStackTrace();
+				//e1.printStackTrace();
 			} catch (IOException e1) {
-				e1.printStackTrace();
+				//e1.printStackTrace();
 			}
 
 			// System.out.println("From coordinater sever: " + msg.toString());
@@ -283,7 +283,7 @@ public class TPCMasterHandler implements NetworkHandler {
 
 		private void handleDel(KVMessage msg, String key) {
 			AutoGrader.agTPCDelStarted(slaveID, msg, key);
-			System.out.println("in handleDel");
+			//System.out.println("in handleDel");
 
 			// Store for use in the second phase
 			originalMessage = new KVMessage(msg);
@@ -355,14 +355,14 @@ public class TPCMasterHandler implements NetworkHandler {
 						toReturn.setTpcOpId(masterResp.getTpcOpId());
 						sendToReturn(toReturn);
 					} catch (KVException e) {
-						e.printStackTrace();
+				//		e.printStackTrace();
 					}
 				} else {
 					if (origMsg.getMsgType().equals("putreq")) {
 						try {
 							this.keyserver.put(origMsg.getKey(), origMsg.getValue());
 						} catch (KVException e) {
-							System.out.println("Some how the put failed. BAD");
+					//		System.out.println("Some how the put failed. BAD");
 							return;
 						}
 
@@ -375,13 +375,13 @@ public class TPCMasterHandler implements NetworkHandler {
 							toReturn.setTpcOpId(masterResp.getTpcOpId());
 							sendToReturn(toReturn);
 						} catch (KVException e) {
-							e.printStackTrace();
+						//	e.printStackTrace();
 						}
 					} else if (origMsg.getMsgType().equals("delreq")) {
 						try {
 							this.keyserver.del(origMsg.getKey());
 						} catch (KVException e) {
-							System.out.println("Some how the del failed. BAD");
+							//System.out.println("Some how the del failed. BAD");
 							return;
 						}
 
@@ -394,7 +394,7 @@ public class TPCMasterHandler implements NetworkHandler {
 							toReturn.setTpcOpId(masterResp.getTpcOpId());
 							sendToReturn(toReturn);
 						} catch (KVException e) {
-							e.printStackTrace();
+							//e.printStackTrace();
 						}
 					}
 				}
@@ -409,7 +409,7 @@ public class TPCMasterHandler implements NetworkHandler {
 					toReturn.setTpcOpId(masterResp.getTpcOpId());
 					sendToReturn(toReturn);
 				} catch (KVException e) {
-					e.printStackTrace();
+					//e.printStackTrace();
 				}
 
 			}
@@ -469,7 +469,7 @@ public class TPCMasterHandler implements NetworkHandler {
 		// Response should always be success, except for Exceptions. Throw away.
 
 		KVMessage response = new KVMessage(master.getInputStream());
-		System.out.println("Response back from server: " + response.toString());
+		//System.out.println("Response back from server: " + response.toString());
 		master.close();
 		AutoGrader.agRegistrationFinished(slaveID);
 	}
