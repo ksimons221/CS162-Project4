@@ -109,15 +109,13 @@ public class TPCMasterHandler implements NetworkHandler {
 			String key = msg.getKey();
 
 			if (msg.getMsgType().equals("putreq")) {
-
+				tpcLog.appendAndFlush(msg);
 				if (ignoreNext == true) {
-					tpcLog.appendAndFlush(msg);
 					boolean sent = sendAbortMessage(msg.getTpcOpId());
 					ignoreNext = false;
 					closeConn();
 					return;
 				} else {
-					tpcLog.appendAndFlush(msg);
 					handlePut(msg, key);
 				}
 			} else if (msg.getMsgType().equals("getreq")) {
@@ -130,7 +128,6 @@ public class TPCMasterHandler implements NetworkHandler {
 					closeConn();
 					return;
 				} else {
-					tpcLog.appendAndFlush(msg);
 					handleDel(msg, key);
 				}
 			} else if (msg.getMsgType().equals("ignoreNext")) {
