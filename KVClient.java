@@ -64,7 +64,7 @@ public class KVClient implements KeyValueInterface {
 		Socket mySocket = null;
 		try {
 			mySocket = new Socket();
-			System.out.println("Server: " + server + "  port" + port);
+			//System.out.println("Server: " + server + "  port" + port);
 			mySocket.connect(new InetSocketAddress(server, port));
 		} catch (UnknownHostException e) {
 			KVMessage errorMessage = new KVMessage("resp", "Network Error: Could not connect");
@@ -141,7 +141,7 @@ public class KVClient implements KeyValueInterface {
 		closeHost(socket);
 
 		if (returnedMessage.getMessage().equals("Success")) { // works no error
-			System.out.println("successfully put stuff");
+			//System.out.println("successfully put stuff");
 			return;
 		} else { // there was an error
 			KVException toThrow = new KVException(returnedMessage);
@@ -151,7 +151,7 @@ public class KVClient implements KeyValueInterface {
 
 	public String get(String key) throws KVException {
 		Socket socket = connectHost();
-		System.out.println("connected from get");
+		//System.out.println("connected from get");
 		KVMessage ourMessage = new KVMessage("getreq");
 		ourMessage.setKey(key);
 		ourMessage.sendMessage(socket);
@@ -191,7 +191,7 @@ public class KVClient implements KeyValueInterface {
 			throw toThrow;
 		}
 
-		System.out.println("connected from get");
+		//System.out.println("connected from get");
 		KVMessage ourMessage = new KVMessage("getreq");
 		ourMessage.setKey(key);
 		ourMessage.sendMessage(socket);
@@ -242,7 +242,7 @@ public class KVClient implements KeyValueInterface {
 		closeHost(socket);
 
 		if (returnedMessage.getMessage().equals("Success")) { // works no error
-			System.out.println("Deleted del succsefully");
+			//System.out.println("Deleted del succsefully");
 			return;
 		} else { // there was an error
 			KVException toThrow = new KVException(returnedMessage);
