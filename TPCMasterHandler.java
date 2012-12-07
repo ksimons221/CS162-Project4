@@ -111,7 +111,8 @@ public class TPCMasterHandler implements NetworkHandler {
 			if (msg.getMsgType().equals("putreq")) {
 
 				if (ignoreNext == true) {
-					sendAbortMessage(msg.getTpcOpId());
+					tpcLog.appendAndFlush(msg);
+					boolean sent = sendAbortMessage(msg.getTpcOpId());
 					ignoreNext = false;
 					closeConn();
 					return;
@@ -122,8 +123,9 @@ public class TPCMasterHandler implements NetworkHandler {
 			} else if (msg.getMsgType().equals("getreq")) {
 				handleGet(msg, key);
 			} else if (msg.getMsgType().equals("delreq")) {
+				tpcLog.appendAndFlush(msg);
 				if (ignoreNext == true) {
-					sendAbortMessage(msg.getTpcOpId());
+					boolean sent =  sendAbortMessage(msg.getTpcOpId());
 					ignoreNext = false;
 					closeConn();
 					return;
@@ -161,21 +163,22 @@ public class TPCMasterHandler implements NetworkHandler {
 			closeConn();
 		}
 
-		private void sendAbortMessage(String id) {
+		private boolean sendAbortMessage(String id) {
 
 			KVMessage toReturn = null;
 			try {
 				toReturn = new KVMessage("abort", "Ignore next");
 			} catch (KVException e) {
-				return;
+				return false;
 			}
 			toReturn.setTpcOpId(id);
 			try {
 				toReturn.sendMessage(client);
 			} catch (KVException e) {
-				return;
+				return false;
 			}
 
+			return true;
 		}
 
 		private void sendIgnoreNextAck() {
@@ -184,12 +187,14 @@ public class TPCMasterHandler implements NetworkHandler {
 			try {
 				toReturn = new KVMessage("resp", "Success");
 			} catch (KVException e) {
+				ignoreNext = false;
 				return;
 			}
 
 			try {
 				toReturn.sendMessage(client);
 			} catch (KVException e) {
+				ignoreNext = false;
 				return;
 			}
 
@@ -428,6 +433,7 @@ public class TPCMasterHandler implements NetworkHandler {
 	public void setTPCLog(TPCLog tpcLog) {
 		this.tpcLog = tpcLog;
 		this.originalMessage = tpcLog.getInterruptedTpcOperation();
+		this.ignoreNext = tpcLog.ignoreNext;
 	}
 
 	/**

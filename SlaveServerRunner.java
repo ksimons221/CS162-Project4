@@ -12,6 +12,11 @@ public class SlaveServerRunner {
 	 */
 	public static boolean logDebugging = true;
 
+	
+	public SlaveServerRunner(int numSlaves){
+		
+	}
+	
 	public TPCLog getKVSlave(int index) {
 
 		return runningSlaves.get(index).getTPCLog();
@@ -22,6 +27,9 @@ public class SlaveServerRunner {
 	
 	public void run() {
 
+		
+		
+		
 		runSlaveServer1 temp1 = new runSlaveServer1(50, 4000);
 		new Thread(temp1).start();
 

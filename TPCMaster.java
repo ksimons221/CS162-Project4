@@ -54,10 +54,7 @@ public class TPCMaster {
 	 * SlaveServers.
 	 * 
 	 */
-	
-	boolean testFailure1 = false;
-	boolean testFailure2 = false;
-	
+
 	
 	public KVMessage transformOtherException(String s) throws KVException {
 		KVMessage temp = new KVMessage("resp", s);
@@ -511,15 +508,6 @@ public class TPCMaster {
 	
 		if (MessageResponses[0].getMsgType().equals("ready") && MessageResponses[1].getMsgType().equals("ready")) {
 			
-			if (testFailure1) {
-				// // FOR TESTING FAILURE
-				primary.alive = false;
-				registerSingleSlave temp = new registerSingleSlave((int) primary.slaveID, primary.port + 20);
-				System.out.println("REGISTER NEW SLAVE");
-				temp.run();
-				while (allSlavesRegisteredAndAlive() == false) {
-				}
-			}
 			
 			Thread firstServer1 = new Thread( new commitPhase(primary, tempID1));
 			Thread secondServer1 = new Thread( new commitPhase(secondary, tempID1));

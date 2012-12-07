@@ -309,7 +309,10 @@ public class KVMessage implements Serializable {
 			}
 		} else {
 			System.out.println("Check validity error");
+			System.out.println(this.toString());
+
 		}
+		
 	}
 
 	public static boolean validMessageType(String input) {

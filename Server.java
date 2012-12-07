@@ -57,7 +57,7 @@ public class Server {
 		server.addHandler(handler);
 		server.connect();
 		System.out.println("Starting Master");
-		SlaveServerRunner temp = new SlaveServerRunner();
+		SlaveServerRunner temp = new SlaveServerRunner(numberOfSlaves);
 		temp.run();
 		server.run();		
 		

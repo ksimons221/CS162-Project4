@@ -56,6 +56,9 @@ public class TPCLog {
 
 	private KVMessage finTPCOp = null;
 	
+	
+	public boolean ignoreNext = false;
+
 	/**
 	 * 
 	 * @param logPath 
@@ -83,8 +86,7 @@ public class TPCLog {
 		}
 		//entries = new ArrayList<KVMessage>();
 		entries.add(entry);
-		flushToDisk();
-		entries.clear();
+		flushToDisk();   ////over writes everything
 	}
 
 	/**
@@ -148,16 +150,11 @@ public class TPCLog {
 		// implement me
 		loadFromDisk();
 
-		System.out.println("IN REBUILD SERVER");
-
-		System.out.println(this.toString());
-
-		
 		if (entries == null) {
+			System.out.println("entry null");
 			return;
 		}
 		
-		boolean ignoreNext = false;
 		for (int i = 0; i < entries.size(); i++) {
 			//System.out.println("Current entry is: " + entries.get(i));
 			String msgType = entries.get(i).getMsgType();
@@ -234,6 +231,9 @@ public class TPCLog {
 	
 	@Override
 	public String toString() {
+		if (entries.size() == 0) {
+			return "Entry size is 0";
+		}
 		String toReturn = "";
 		for (int i = 0; i <entries.size(); i++) {
 			toReturn = toReturn + entries.get(i).toString();

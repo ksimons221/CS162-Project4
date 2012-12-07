@@ -60,6 +60,25 @@ String logPath = "1@stuff";
 		resp5.setTpcOpId("5");
 		list.add(resp5);
 		
+		
+		KVMessage msg56 = new KVMessage("ignoreNext");
+		list.add(msg56);
+		
+		
+		KVMessage msg6 = new KVMessage("putreq");
+		msg6.setKey("1");
+		msg6.setValue("10");
+		msg6.setTpcOpId("1");
+		list.add(msg6);
+
+		KVMessage resp6 = new KVMessage("commit");
+		resp6.setTpcOpId("1");
+		list.add(resp6);
+		
+		
+		KVMessage msg7 = new KVMessage("ignoreNext");
+		list.add(msg7);
+		
 		this.kvs = new KVServer(100,100);
 		this.log = new TPCLog(logPath,kvs);
 	}
@@ -71,10 +90,12 @@ String logPath = "1@stuff";
 			log.appendAndFlush(message);
 		}
 		log.rebuildKeyServer();
-		//System.out.println(kvs.getStore().toXML());
+
 		boolean throwsException=false;
 		assertEquals(this.kvs.get("1"), "1");
 		assertEquals(this.kvs.get("2"), "2");
+		assertEquals(true, log.ignoreNext);
+		
 		try{
 			assertEquals(this.kvs.get("3"), "3");
 		}
