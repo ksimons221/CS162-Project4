@@ -92,6 +92,20 @@ public class KVServer implements KeyValueInterface {
 
 	}
 
+	public void verifyKey(String key) throws KVException {
+		if (keyValidation(key) == false) {
+			throw badlyFormattedKey();
+		}
+
+		if (key.length() > MAX_KEY_SIZE) { // bigger then the max key size
+			throw keyTooLarge();
+		}
+
+		if (value.length() > MAX_VAL_SIZE) { // bigger then the max value size
+			throw valueTooLarge();
+		}
+	}
+
 	private KVException badlyFormattedKey() {
 		KVMessage errorMessage = null;
 		try {

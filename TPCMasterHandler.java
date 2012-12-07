@@ -115,7 +115,7 @@ public class TPCMasterHandler implements NetworkHandler {
 			if (msg.getMsgType().equals("putreq")) {
 				tpcLog.appendAndFlush(msg);
 				if (ignoreNext == true) {
-					boolean sent = sendAbortMessage(msg.getTpcOpId());
+					boolean sent = sendAbortMessage(msg.getTpcOpId(),"ignore next");
 					ignoreNext = false;
 					closeConn();
 					return;
@@ -127,7 +127,7 @@ public class TPCMasterHandler implements NetworkHandler {
 			} else if (msg.getMsgType().equals("delreq")) {
 				tpcLog.appendAndFlush(msg);
 				if (ignoreNext == true) {
-					boolean sent =  sendAbortMessage(msg.getTpcOpId());
+					boolean sent =  sendAbortMessage(msg.getTpcOpId()i,"ignore next");
 					ignoreNext = false;
 					closeConn();
 					return;
@@ -164,11 +164,11 @@ public class TPCMasterHandler implements NetworkHandler {
 			closeConn();
 		}
 
-		private boolean sendAbortMessage(String id) {
+		private boolean sendAbortMessage(String id,String message) {
 
 			KVMessage toReturn = null;
 			try {
-				toReturn = new KVMessage("abort", "Ignore next");
+				toReturn = new KVMessage("abort", message);
 			} catch (KVException e) {
 				return false;
 			}
@@ -212,6 +212,14 @@ public class TPCMasterHandler implements NetworkHandler {
 		private void handlePut(KVMessage msg, String key) {
 			AutoGrader.agTPCPutStarted(slaveID, msg, key);
 
+			try {
+				kvServer.verifyKey(key);
+			} catch (KVException e) {
+				sendAbortMessage(msg.getTpcOpId(),e.getMsg().getMessage());
+				Autograder.agTPCPutFinished(slaveID, msg, key);
+				return;
+			}
+
 			// Store for use in the second phase
 			originalMessage = new KVMessage(msg);
 
@@ -220,6 +228,7 @@ public class TPCMasterHandler implements NetworkHandler {
 				response = new KVMessage("ready");
 				response.setTpcOpId(originalMessage.getTpcOpId());
 			} catch (KVException e) {
+				sendAbortMessage(msg.getTpcOpId(),e.getMsg().getMessage());
 				AutoGrader.agTPCPutFinished(slaveID, msg, key);
 				return;
 			}
@@ -229,6 +238,7 @@ public class TPCMasterHandler implements NetworkHandler {
 				AutoGrader.agTPCPutFinished(slaveID, msg, key);
 				return;
 			} catch (KVException e) {
+				sendAbortMessage(msg.getTpcOpId(),e.getMsg().getMessage());
 				AutoGrader.agTPCPutFinished(slaveID, msg, key);
 				return;
 			}
