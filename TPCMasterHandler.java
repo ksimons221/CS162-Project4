@@ -213,7 +213,7 @@ public class TPCMasterHandler implements NetworkHandler {
 			AutoGrader.agTPCPutStarted(slaveID, msg, key);
 
 			try {
-				kvServer.verifyKey(key);
+				this.keyserver.verifyKey(key);
 			} catch (KVException e) {
 				sendAbortMessage(msg.getTpcOpId(),e.getMsg().getMessage());
 				Autograder.agTPCPutFinished(slaveID, msg, key);
