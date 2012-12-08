@@ -41,7 +41,7 @@ String[] putValues= {"5-value", "801-value", "1025-value", "2012-value"};
 
 	      new TrialRegistration(this.slaveIds, this.slavePorts);
 	      while(coordinator.stillRunningRegistration()){
-	    	  System.out.println(".*");
+	    	 Thread.sleep(4000);
 	      }
 	      System.out.println("done");
 		
